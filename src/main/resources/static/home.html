@@ -13,6 +13,9 @@
 
                 },
                 ready: function () {
+                    $.post("/web/clean",{},function (data) {
+
+                    });
                     chessData = new Array(15).fill(0).map(function () {
                         return new Array(15).fill(0);
                     });

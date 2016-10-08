@@ -21,13 +21,21 @@ class RestfulController {
     judge(x,y,value,sessionId)
   }
 
+  @RequestMapping(Array("/clean"))
+  def clean(session: HttpSession) : String = {
+    if (map.contains(session.getId)){
+      map -= session.getId
+    }
+    "ok"
+  }
+
   def judge(x :Int, y :Int, value : Int, key :String) : String = {
     val array  = map(key)
     array(x)(y) = value
 
     def foreachO: Int = {
       var x_c :Int = x
-      var count = 0;
+      var count = 0
       while (array(x_c)(y) == value && x_c < 15){
         x_c += 1
         count +=1
@@ -41,7 +49,7 @@ class RestfulController {
     }
     def foreachT: Int = {
       var y_c: Int = y
-      var count = 0;
+      var count = 0
       while (array(x)(y_c) == value && y_c < 15){
         y_c += 1
         count +=1
@@ -57,7 +65,7 @@ class RestfulController {
     def foreachTr: Int = {
       var x_c :Int = x
       var y_c: Int = y
-      var count = 0;
+      var count = 0
       while (array(x_c)(y_c) == value && y_c < 15 && x_c < 15){
         y_c += 1
         x_c += 1
@@ -76,7 +84,7 @@ class RestfulController {
     def foreachF: Int = {
       var x_c :Int = x
       var y_c: Int = y
-      var count = 0;
+      var count = 0
       while (array(x_c)(y_c) == value && y_c < 15 && x_c > 0){
         y_c += 1
         x_c -= 1
@@ -92,8 +100,10 @@ class RestfulController {
       count
     }
 
-    if(foreachO >= 6 || foreachT >= 6 || foreachTr >= 6 || foreachF >= 6)
+    if(foreachO >= 6 || foreachT >= 6 || foreachTr >= 6 || foreachF >= 6) {
+      map -= key
       return "win"
+    }
     "play"
   }
 }
