@@ -108,6 +108,22 @@ class RestfulController {
   }
 
   def evaluateState(array: Array[Array[Int]] ): Unit = {
+    var line: Array[Array[Int]] = Array.ofDim(6,17)
+  }
 
+  /**
+    *
+    * @return
+    */
+  def getAvailable(): List[Map[Int,Int]] = {
+    var list = List()
+
+    list
+  }
+
+  def getNearPoints(x: Int, y: Int): List[Map[Int,Int]] = {
+    var list = List()
+
+    list
   }
 }
