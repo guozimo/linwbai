@@ -41,33 +41,6 @@
 
         }
 
-//        var canvas_ = new Vue({
-//            el: '#canvas',
-//            data: {
-//
-//            },
-//            ready: function () {
-//
-//            },
-//            methods: {
-//                play: function(e) {
-//                    var x = parseInt((e.clientX - 20)/40);
-//                    var y = parseInt((e.clientY - 20)/40);
-//                    if(x > 14 || y > 14 || chessData[x][y] != 0){
-//                        return;
-//                    }
-//                    if(is_w){
-//                        is_w = false;
-//                        drawChess(1,x,y);
-//                    } else {
-//                        is_w = true;
-//                        drawChess(2,x,y);
-//                    }
-//                }
-//            }
-//        });
-
-
         var chessData;
         var canvas;
         var context;
@@ -77,26 +50,6 @@
         img_w.src = "/image/img_w.png";
         var img_b = new Image();
         img_b.src = "/image/img_b.png";
-
-//        function drawRect() {//页面加载完毕调用函数，初始化棋盘
-//            chessData = new Array(15).fill(0).map(function (v,i,a) {
-//                return new Array(15).fill(0);
-//            });
-//            canvas = document.getElementById("canvas");
-//            context = canvas.getContext("2d");
-//            for (var i = 0; i <= 640; i += 40) {//绘制棋盘的线
-//                context.beginPath();
-//                context.moveTo(0, i);
-//                context.lineTo(640, i);
-//                context.closePath();
-//                context.stroke();
-//                context.beginPath();
-//                context.moveTo(i, 0);
-//                context.lineTo(i, 640);
-//                context.closePath();
-//                context.stroke();
-//            }
-//        }
 
         function play(e) {
             var x = parseInt((e.clientX - 20)/40);

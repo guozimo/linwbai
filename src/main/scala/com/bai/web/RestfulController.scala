@@ -106,4 +106,8 @@ class RestfulController {
     }
     "play"
   }
+
+  def evaluateState(array: Array[Array[Int]] ): Unit = {
+
+  }
 }
