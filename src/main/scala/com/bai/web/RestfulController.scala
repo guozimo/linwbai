@@ -4,6 +4,9 @@ import javax.servlet.http.HttpSession
 
 import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 
+import scala.collection.mutable.ArrayBuffer
+import scala.util.Random
+
 /**
   * Created by linwbai on 16-10-8.
   */
@@ -12,12 +15,16 @@ import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 class RestfulController {
 
   var map:Map[String,Array[Array[Int]]] = Map()
+  var stackMap: Map[String,ArrayBuffer[Map[Int,Int]]] = Map()
 
   @RequestMapping(Array("/judgment"))
   def judgment(x :Int, y :Int, value : Int, session :HttpSession) :String = {
     val sessionId = session.getId
-    if(!map.contains(sessionId))
+    if(!map.contains(sessionId)){
       map+=(sessionId -> Array.ofDim[Int](15,15))
+      stackMap+=(sessionId -> ArrayBuffer[Map[Int,Int]]())
+    }
+    stackMap(sessionId) += Map(x -> y)
     judge(x,y,value,sessionId)
   }
 
@@ -101,29 +108,8 @@ class RestfulController {
     }
 
     if(foreachO >= 6 || foreachT >= 6 || foreachTr >= 6 || foreachF >= 6) {
-      map -= key
       return "win"
     }
     "play"
-  }
-
-  def evaluateState(array: Array[Array[Int]] ): Unit = {
-    var line: Array[Array[Int]] = Array.ofDim(6,17)
-  }
-
-  /**
-    *
-    * @return
-    */
-  def getAvailable(): List[Map[Int,Int]] = {
-    var list = List()
-
-    list
-  }
-
-  def getNearPoints(x: Int, y: Int): List[Map[Int,Int]] = {
-    var list = List()
-
-    list
   }
 }
