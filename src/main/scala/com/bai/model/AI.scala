@@ -67,12 +67,23 @@ class AI {
       return
     }
     moves(0) = board.bestMove
-
+    var value = 0
     for (i <- 0 to count) {
       if ((i > 0 && board.bestMove.equalsVal(moves(1))) || board.isLose(i)){
 
       }else{
         board.play(moves(i))
+        while (true) {
+          if (i > 1 && alpha + 1 < beta) {
+            value = -AlphaBeta(depth - 1, -alpha - 1, -alpha,board)
+            if (value <= alpha || value >= beta){
+
+            }else {
+              value = -AlphaBeta(depth - 1, -beta, -alpha,board)
+            }
+          }
+        }
+        board.delPlay()
       }
     }
   }
@@ -81,24 +92,51 @@ class AI {
   var stopThink = false
   var maxDepth = 0
 
-//  def AlphaBeta(depth: Int, alpha: Int, beta: Int, board: Board): Int ={
-//    total += 1
-//    cnt -= 1
-//    if(cnt <= 0){
-//      cnt = 1000
-//      if (maxDepth > 4)
-//        stopThink = true
-//      if (board.checkWin())
-//        return -10000
-//      if (depth == 0)
-//        return
-//    }
-//
-//  }
+  def AlphaBeta(depth: Int, alpha: Int, beta: Int, board: Board): Int ={
+    var alphaR = alpha
+    total += 1
+    cnt -= 1
+    if(cnt <= 0){
+      cnt = 1000
+      if (maxDepth > 4)
+        stopThink = true
+      if (board.checkWin())
+        return -10000
+      if (depth == 0)
+        return evaluate(board)
+    }
+    val moves: Array[Pos] = Array()
+    val count = getMoves(moves,27,board)
+    var value = 0
+    for (i <- 0 until count) {
+      board.play(moves(i))
+      while (true) {
+        if (i > 1 && alpha + 1 < beta) {
+          value = -AlphaBeta(depth - 1, -alpha - 1, -alpha,board)
+          if (value <= alpha || value >= beta){
+
+          }else {
+            value = -AlphaBeta(depth - 1, -beta, -alpha,board)
+          }
+        }
+      }
+      board.delPlay()
+
+      if (!stopThink){
+        if (value >= beta){
+          return value
+        }
+        if (value > alpha){
+          alphaR = value
+        }
+      }
+    }
+    alphaR
+  }
 
   def evaluate(board: Board): Int ={
-    var cType = ArrayBuffer[Int]()
-    var hType = ArrayBuffer[Int]()
+    val cType = ArrayBuffer[Int]()
+    val hType = ArrayBuffer[Int]()
     var cScore,hScore = 0
     val me = (board.step + 1) & 1
     val you = board.step & 1
