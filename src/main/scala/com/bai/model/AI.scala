@@ -33,7 +33,9 @@ class AI {
 
   var total = 0
 
-  def getBest(board: Board): Unit ={
+  var bestValue = 0
+
+  def getBest(board: Board): Pos ={
     board.bestMove.value = 1
     if (board.step == 0){
       board.bestMove.row = 7
@@ -50,21 +52,29 @@ class AI {
       board.bestMove.col = y
     }
 
+    board.isLose = Array.fill[Boolean](51)(false)
     var i = 0
     while (i < searchDepth){
       i += 2
-
+      if (i < 10) {
+        maxDepth = i
+        bestValue = search(i, -10001, 10000,board)
+        if (bestValue == 10000) {
+          return board.bestMove
+        }
+      }
     }
   }
 
-  def search(depth: Int, alpha: Int, beta: Int, board: Board): Unit ={
+  def search(depth: Int, alpha: Int, beta: Int, board: Board): Int ={
+    var alphaR = alpha
     val moves: Array[Pos] = _
     val count = getMoves(moves,27,board)
     if (count == 1) {
       board.bestMove.row = moves(1).row
       board.bestMove.col = moves(1).col
       board.bestMove.score = moves(1).score
-      return
+      return 0
     }
     moves(0) = board.bestMove
     var value = 0
@@ -84,8 +94,25 @@ class AI {
           }
         }
         board.delPlay()
+
+        if(!stopThink){
+          if (value == -10000)
+            board.isLose(i) = true
+          if (value >= beta) {
+            board.bestMove = moves(i)
+            return value
+          }
+          if (value > alpha) {
+            alphaR = value
+            board.bestMove = moves(i)
+          }
+        }
       }
     }
+    if (alphaR == -10001){
+      return bestValue
+    }
+    alphaR
   }
 
   var cnt = 1000
