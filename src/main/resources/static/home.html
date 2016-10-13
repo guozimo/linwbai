@@ -33,6 +33,9 @@
                         context.closePath();
                         context.stroke();
                     }
+                    $.post("/web/begin",{},function (data) {
+                        drawChess(2,data.row,data.col)
+                    })
                 },
                 methods: {
                 }
@@ -44,7 +47,7 @@
         var chessData;
         var canvas;
         var context;
-        var is_w = true;
+//        var is_w = true;
         var is_done = false;
         var img_w = new Image();
         img_w.src = "/image/img_w.png";
@@ -58,18 +61,21 @@
             if(x > 14 || y > 14 || chessData[x][y] != 0 || is_done){
                 return;
             }
-            if(is_w){
-                is_w = false;
+//            if(is_w){
+//                is_w = false;
                 drawChess(1,x,y);
-            } else {
-                is_w = true;
-                value = 2;
-                drawChess(2,x,y);
-            }
-            $.post("/web/judgment",{x:x,y:y,value:value},function(data){
-                if(data == "win"){
-                    is_done = true;
-                    alert(data);
+//            } else {
+//                is_w = true;
+//                value = 2;
+//                drawChess(2,x,y);
+//            }
+            $.post("/web/play",{x:x,y:y,value:value},function(data){
+                if (data.pos) {
+                    drawChess(2, data.pos.row, data.pos.col)
+                }
+                if (data.win) {
+                    is_done = true
+                    alert(data.win)
                 }
             })
         }
