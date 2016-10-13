@@ -57,10 +57,10 @@ class Board {
 
   def updateCell(x: Int, y: Int): Unit ={
     var a,b,key = 0
-    for(i <- 0 until 4) {
+    for(i <- 1 until 4) {
       a = x + dx(i)
       b = y + dy(i)
-      for (j <- 0 until 4){
+      for (j <- 1 until 4){
         if (a < 15 && b < 15) {
           key = getKey(x,y,i)
           cell(a)(b).pattern(0)(i) = patternTable(key)(0)
@@ -71,7 +71,7 @@ class Board {
       }
       a = x - dx(i)
       b = y - dy(i)
-      for (k <- 0 until 4){
+      for (k <- 1 until 4){
         if (a < 15 && b < 15) {
           key = getKey(x,y,i)
           cell(a)(b).pattern(0)(i) = patternTable(key)(0)

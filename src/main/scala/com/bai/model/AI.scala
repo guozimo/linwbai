@@ -24,8 +24,8 @@ class AI {
 
   val board = new Board
 
-  initPattern()
   initType()
+  initPattern()
   initCell()
   board.isLose = Array.fill[Boolean](51)(false)
   board.stack = Array.fill[Pos](400)(new Pos)
@@ -49,13 +49,14 @@ class AI {
       board.patternTable(i)(0) = lineType(0,i)
       board.patternTable(i)(1) = lineType(1,i)
     }
+    board.patternTable.foreach(i => i.foreach(j => println(j)))
   }
 
   def initType(): Unit ={
-    for (i <- 0 until 10){
-      for (j <- 0 until 6){
-        for (k <- 0 until 6){
-          for (l <- 0 until 3){
+    for (i <- 1 until 10){
+      for (j <- 1 until 6){
+        for (k <- 1 until 6){
+          for (l <- 1 until 3){
             board.typeTable(i)(j)(k)(l) = board.getType(i,j,k,l)
           }
         }
@@ -79,7 +80,6 @@ class AI {
     }
     val p1 = shortLine(line_left)
     val p2 = shortLine(line_right)
-
     if(p1 == board.block3 && p2 == board.block3)
       return board.checkFlex3(line_left)
     if (p1 == board.block4 && p2 == board.block4)
@@ -270,7 +270,7 @@ class AI {
     val me = (board.step + 1) & 1
     val you = board.step & 1
     var cell: Cell = new Cell
-    for (i <- 0 until 15;j <- 0 until 15){
+    for (i <- 5 until 19;j <- 5 until 19){
       if(board.cell(i)(j).piece == 2){
         cell = board.cell(i)(j)
         typeCount(cell,me,cType)
@@ -286,7 +286,7 @@ class AI {
     if (cType(board.flex4) > 0 && hType(board.win) == 0)
       return 10000
 
-    for (i <- 0 until 8) {
+    for (i <- 1 until 8) {
       cScore += cType(i)*cVal(i)
       hScore += hType(i)*hVal(i)
     }
@@ -319,7 +319,7 @@ class AI {
     mSize = cutCand(moves,cSize)
     if (mSize == 0){
       mSize = cSize
-      for (i <- 0 to mSize){
+      for (i <- 2 to mSize){
         moves += board.cand(i)
       }
     }
@@ -372,7 +372,7 @@ class AI {
         moves += board.cand(2)
       }
 
-      for (i <- mSize + 1 to cSize) {
+      for (i <- mSize + 2 to cSize) {
         if (isType(i,board.block4,me) || isType(i,board.block4,you)){
           mSize += mSize
           moves(mSize) = board.cand(i)
