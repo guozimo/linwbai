@@ -13,7 +13,7 @@ class Pos {
   @BeanProperty
   var col: Int = _
   @BeanProperty
-  var value: Int = _ // 0 无 1 黑(AI) 2 白
+  var value: Int = 2 // 0 无 1 白(AI) 2 黑
   @BeanProperty
   var score: Int = _
 

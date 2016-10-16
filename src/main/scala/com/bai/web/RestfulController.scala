@@ -2,11 +2,8 @@ package com.bai.web
 
 import javax.servlet.http.HttpSession
 
-import com.bai.model.{AI, Play, Pos}
-import org.springframework.web.bind.annotation.{RequestMapping, ResponseBody, RestController}
-
-import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
+import com.bai.model.{AI, MinMaxAI, Play, Pos}
+import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 
 /**
   * Created by linwbai on 16-10-8.
@@ -15,17 +12,23 @@ import scala.util.Random
 @RequestMapping(Array("/web"))
 class RestfulController {
 
-  var map:Map[String,AI] = Map()
+  var map:Map[String,MinMaxAI] = Map()
 
   @RequestMapping(Array("begin"))
   def begin(session: HttpSession): Pos = {
     val sessionId = session.getId
     if(!map.contains(sessionId)){
-      map+=(sessionId -> new AI)
+//      map+=(sessionId -> new AI)
+      map += (sessionId -> new MinMaxAI)
     }
     val ai = map(sessionId)
-    val pos = ai.getBest()
-    ai.board.play(pos)
+    val pos = new Pos
+    pos.col = 7
+    pos.row = 7
+    pos.value = 2
+    ai.play(pos)
+//    val pos = ai.getBest
+//    ai.board.play(pos)
     pos
   }
 
@@ -38,18 +41,28 @@ class RestfulController {
     pos.row = x
     pos.col = y
     pos.value = value
-    ai.board.play(pos)
-    if (ai.board.checkWin()){
+    ai.play(pos)
+    if (ai.over) {
       play.win = "你已经比AI更聪明了"
       return play
     }
-    val best = ai.getBest()
-    ai.board.play(best)
-    play.pos = best
-    if (ai.board.checkWin()){
+    play.pos = ai.getPlay
+    ai.play(play.pos)
+    if (ai.over){
       play.win = "还没有AI聪明,行不行啊"
-      return play
     }
+    //    ai.board.play(pos)
+//    if (ai.board.checkWin()){
+//      play.win = "你已经比AI更聪明了"
+//      return play
+//    }
+//    val best = ai.getBest
+//    ai.board.play(best)
+//    play.pos = best
+//    if (ai.board.checkWin()){
+//      play.win = "还没有AI聪明,行不行啊"
+//      return play
+//    }
     play
   }
 

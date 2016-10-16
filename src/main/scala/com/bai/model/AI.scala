@@ -49,7 +49,6 @@ class AI {
       board.patternTable(i)(0) = lineType(0,i)
       board.patternTable(i)(1) = lineType(1,i)
     }
-    board.patternTable.foreach(i => i.foreach(j => println(j)))
   }
 
   def initType(): Unit ={
@@ -114,7 +113,7 @@ class AI {
 
     kong = len2 - count
     loop.breakable {
-      for (k <- Range(3,0,-1)) {
+      for (k <- Range(0,3,-1)) {
         if (line(k) == color) {
           if (kong + count > 4)
             loop.break()
@@ -136,7 +135,7 @@ class AI {
   }
 
 
-  def getBest(): Pos ={
+  def getBest: Pos ={
     stopThink = false
     total = 0
     board.bestMove.value = 1
@@ -208,6 +207,8 @@ class AI {
             alphaR = value
             board.bestMove = moves(i)
           }
+        } else {
+          return alphaR
         }
       }
     }

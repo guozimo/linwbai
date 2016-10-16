@@ -69,12 +69,15 @@
 //                value = 2;
 //                drawChess(2,x,y);
 //            }
+            is_done = true;
             $.post("/web/play",{x:x,y:y,value:value},function(data){
+                debugger
                 if (data.pos) {
-                    drawChess(2, data.pos.row, data.pos.col)
+                    drawChess(2, data.pos.row, data.pos.col);
+                    is_done = false;
                 }
                 if (data.win) {
-                    is_done = true
+                    is_done = true;
                     alert(data.win)
                 }
             })
