@@ -14,28 +14,27 @@
                 },
                 ready: function () {
                     $.post("/web/clean",{},function (data) {
-
+                        chessData = new Array(15).fill(0).map(function () {
+                            return new Array(15).fill(0);
+                        });
+                        canvas = document.getElementById("canvas");
+                        context = canvas.getContext("2d");
+                        for (var i = 0; i <= 640; i += 40) {//绘制棋盘的线
+                            context.beginPath();
+                            context.moveTo(0, i);
+                            context.lineTo(640, i);
+                            context.closePath();
+                            context.stroke();
+                            context.beginPath();
+                            context.moveTo(i, 0);
+                            context.lineTo(i, 640);
+                            context.closePath();
+                            context.stroke();
+                        }
+                        $.post("/web/begin",{},function (data) {
+                            drawChess(2,data.row,data.col)
+                        })
                     });
-                    chessData = new Array(15).fill(0).map(function () {
-                        return new Array(15).fill(0);
-                    });
-                    canvas = document.getElementById("canvas");
-                    context = canvas.getContext("2d");
-                    for (var i = 0; i <= 640; i += 40) {//绘制棋盘的线
-                        context.beginPath();
-                        context.moveTo(0, i);
-                        context.lineTo(640, i);
-                        context.closePath();
-                        context.stroke();
-                        context.beginPath();
-                        context.moveTo(i, 0);
-                        context.lineTo(i, 640);
-                        context.closePath();
-                        context.stroke();
-                    }
-                    $.post("/web/begin",{},function (data) {
-                        drawChess(2,data.row,data.col)
-                    })
                 },
                 methods: {
                 }
