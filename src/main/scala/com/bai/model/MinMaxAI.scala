@@ -17,6 +17,8 @@ class MinMaxAI {
 
   var over = false
 
+  val start_time = System.currentTimeMillis()
+
   initWin()
 
   def initWin(): Unit = {

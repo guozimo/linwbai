@@ -3,6 +3,8 @@ package com.bai.web
 import javax.servlet.http.HttpSession
 
 import com.bai.model.{AI, MinMaxAI, Play, Pos}
+import scala.collection._
+
 import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 
 /**
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 @RequestMapping(Array("/web"))
 class RestfulController {
 
-  var map:Map[String,MinMaxAI] = Map()
+  var map:concurrent.Map[String,MinMaxAI] = new concurrent.TrieMap
 
   @RequestMapping(Array("begin"))
   def begin(session: HttpSession): Pos = {
@@ -44,11 +46,13 @@ class RestfulController {
     ai.play(pos)
     if (ai.over) {
       play.win = "你已经比AI更聪明了"
+      map -= sessionId
       return play
     }
     play.pos = ai.getPlay
     ai.play(play.pos)
     if (ai.over){
+      map -= sessionId
       play.win = "还没有AI聪明,行不行啊"
     }
     //    ai.board.play(pos)
@@ -68,6 +72,10 @@ class RestfulController {
 
   @RequestMapping(Array("/clean"))
   def clean(session: HttpSession) : String = {
+    map.foreach(kv => {
+      if (System.currentTimeMillis() - kv._2.start_time > 360000)
+          map -= kv._1
+    })
     if (map.contains(session.getId)){
       map -= session.getId
     }
