@@ -6,6 +6,7 @@
     <!--<script type="text/javascript" src="js/lib/vue-resource.min.js"></script>-->
     <script type="text/javascript" src="js/lib/jquery-3.0.0.min.js"></script>
     <script type="text/javascript">
+        var space = screen.width > screen.height ? (screen.height - 40)/16 : (screen.width - 40)/16;
         window.onload = function () {
             var body_ = new Vue({
                 el: 'body',
@@ -18,16 +19,18 @@
                             return new Array(15).fill(0);
                         });
                         canvas = document.getElementById("canvas");
+                        canvas.width = 16*space;
+                        canvas.height = 16*space;
                         context = canvas.getContext("2d");
-                        for (var i = 0; i <= 640; i += 40) {//绘制棋盘的线
+                        for (var i = 0; i <= 15*space; i += space) {//绘制棋盘的线
                             context.beginPath();
                             context.moveTo(0, i);
-                            context.lineTo(640, i);
+                            context.lineTo(15*space, i);
                             context.closePath();
                             context.stroke();
                             context.beginPath();
                             context.moveTo(i, 0);
-                            context.lineTo(i, 640);
+                            context.lineTo(i, 15*space);
                             context.closePath();
                             context.stroke();
                         }
@@ -41,7 +44,7 @@
             });
 
 
-        }
+        };
 
         var chessData;
         var canvas;
@@ -54,8 +57,8 @@
         img_b.src = "/image/img_b.png";
 
         function play(e) {
-            var x = parseInt((e.clientX - 20)/40);
-            var y = parseInt((e.clientY - 20)/40);
+            var x = parseInt((e.clientX - 20)/space);
+            var y = parseInt((e.clientY - 20)/space);
             var value = 1;
             if(x > 14 || y > 14 || chessData[x][y] != 0 || is_done){
                 return;
@@ -70,7 +73,6 @@
 //            }
             is_done = true;
             $.post("/web/play",{x:x,y:y,value:value},function(data){
-                debugger
                 if (data.pos) {
                     drawChess(2, data.pos.row, data.pos.col);
                     is_done = false;
@@ -84,10 +86,10 @@
 
         function drawChess(chess, x, y){
             if(chess == 1) {//w
-                context.drawImage(img_w, x*40 + 20, y*40 +20);
+                context.drawImage(img_w, x*space - 20 + space, y*space - 20 + space);
                 chessData[x][y] = 1;
             }else {
-                context.drawImage(img_b, x*40 + 20, y*40 +20);
+                context.drawImage(img_b, x*space - 20 + space, y*space - 20 + space);
                 chessData[x][y] = 2;
             }
         }
@@ -96,7 +98,7 @@
     </head>
     <body style="margin: 10px;">
         <div>
-            <canvas width="640" id="canvas" onmousedown="play(event)"  height="640">
+            <canvas id="canvas" onmousedown="play(event)">
             </canvas>
         </div>
     </body>
