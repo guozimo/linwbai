@@ -19,8 +19,8 @@
                             return new Array(15).fill(0);
                         });
                         canvas = document.getElementById("canvas");
-//                        canvas.width = 16*space;
-//                        canvas.height = 16*space;
+                        canvas.width = 16*space;
+                        canvas.height = 16*space;
                         context = canvas.getContext("2d");
                         for (var i = 0; i <= 15*space; i += space) {//绘制棋盘的线
                             context.beginPath();
@@ -98,7 +98,7 @@
     </head>
     <body style="margin: 10px;">
         <div>
-            <canvas height="100%" width="100%" id="canvas" onmousedown="play(event)">
+            <canvas id="canvas" onmousedown="play(event)">
             </canvas>
         </div>
     </body>
