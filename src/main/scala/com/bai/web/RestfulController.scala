@@ -2,9 +2,7 @@ package com.bai.web
 
 import javax.servlet.http.HttpSession
 
-import akka.actor.{ActorSystem, Props}
 import com.bai.model.{Clean, MinMaxAI, Play, Pos}
-import com.bai.utils.BaiActor
 
 import scala.collection._
 import org.springframework.web.bind.annotation.{RequestMapping, RestController}
@@ -17,8 +15,8 @@ import org.springframework.web.bind.annotation.{RequestMapping, RestController}
 class RestfulController {
 
   var map:concurrent.Map[String,MinMaxAI] = new concurrent.TrieMap
-  val system = ActorSystem("baiActor")
-  val baiActor = system.actorOf(Props[BaiActor])
+  //val system = ActorSystem("baiActor")
+  //val baiActor = system.actorOf(Props[BaiActor])
 
   @RequestMapping(Array("begin"))
   def begin(session: HttpSession): Pos = {
@@ -61,7 +59,7 @@ class RestfulController {
 
   @RequestMapping(Array("/clean"))
   def clean(session: HttpSession) : String = {
-    baiActor ! Clean(map)
+    //baiActor ! Clean(map)
     if (map.contains(session.getId)){
       map -= session.getId
     }
